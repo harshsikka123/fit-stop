@@ -8,6 +8,7 @@ class App extends React.Component {
       countdown: 3,
       time: null,
       workoutLengthInMins: 15
+
     };
     this.goToWorkout = this.goToWorkout.bind(this);
     this.goToSummary = this.goToSummary.bind(this);

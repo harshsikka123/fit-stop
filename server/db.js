@@ -15,18 +15,18 @@ mongoose.connection.on('error', function(error) {
 
 var exerciseSchema = new Schema({
   name: String,
-  Description: String,
+  description: String,
   type: String,
-  Picture: String, 
-  Environment: String,
+  picture: String,
+  environment: String,
   muscleGroup: String,
-  Difficulty: String
+  difficulty: String
 });
 
 var userSchema = new Schema({
   username: String,
-  Password: String,
-  Preferences: {},
+  password: String,
+  preferences: {},
   workoutHistory: []
 });
 

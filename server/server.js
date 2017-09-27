@@ -17,6 +17,8 @@ app.use('/react', express.static('node_modules/react/dist'));
 app.use('/react-dom', express.static('node_modules/react-dom/dist'));
 app.use('/jquery', express.static('node_modules/jquery/dist'));
 
+
+app.use('/jquery', express.static('node_modules/jquery/dist'));
 console.log('server is running');
 
 
@@ -29,7 +31,16 @@ function getWorkouts(req,res){
     cooldown: []
   }
 
+
+
+
+function getWorkout(req,res){ // this disgusting, callback infected function grabs random workout data and sends it to the front for us
+  var workoutData = {};
+
+  Exercise.findOne({type: 'warmup'},function(err,data){
+
   Exercise.find({type: 'workout'}, function(err,data){
+
     if(err) {
       console.log('err happened with cooldown retrieval: ' + err);
     } else{
@@ -66,18 +77,40 @@ function getWorkouts(req,res){
         }
       })
     }
-  })
-
-}
+  });
 
 
+app.get('/', (req,res)=>{
+  res.sendFile('index.html', { root: 'client/public'});
+});
 
+
+app.get('/workout', (req,res)=>{
+  var returnObj = {
+    warmup: [],
+    workout: [],
+    cooldown: [],
+    counter: 0
+  }
+
+  for(var i = 0; i < 3; i++) {
+    getWorkout(returnObj, res)
+  }
+});
+
+
+
+
+app.get('/workout', getWorkout);
+
+app.get('/history',()=>{})
 
 
 
 app.get('/', (req,res)=>{
   res.sendFile('index.html', { root: 'client/public'});
 });
+
 
 app.get('/workout', getWorkouts);
 
@@ -94,6 +127,7 @@ app.get('/history',(req,res)=>{
     }
   })
 })
+
 
 function addWorkout(req,res){
   
