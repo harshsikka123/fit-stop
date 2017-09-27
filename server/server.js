@@ -79,13 +79,6 @@ app.get('/', (req,res)=>{
   res.sendFile('index.html', { root: 'client/public'});
 });
 
-
-
-
-app.get('/', (req,res)=>{
-  res.sendFile('index.html', { root: 'client/public'});
-});
-
 app.get('/workout', getWorkouts);
 
 
@@ -101,4 +94,31 @@ app.get('/history',(req,res)=>{
     }
   })
 })
-app.post('/addworkout',()=>{})
+
+function addWorkout(req,res){
+  
+  var name = 'harshsikka' // add req.body.username
+  var workout = { // add req.body.workout
+    yay: 'I worked out'
+  }
+  User.findOne({username: name}, function(err, user){
+    console.log(user);
+    if(err) {
+      console.log('err happened with cooldown retrieval: ' + err);
+    } else{
+      user.workoutHistory.unshift(workout);
+      console.log(user.workoutHistory)
+
+      user.save(function(err){
+        if(err) {
+          console.log(err + ' error happened!');
+        } else {
+          console.log('user workouts updated');
+        }
+      })
+      
+    }
+  })
+}
+
+app.post('/addworkout', addWorkout)
